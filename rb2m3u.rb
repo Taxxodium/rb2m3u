@@ -16,36 +16,29 @@ LIBRARY_NAME = ARGV[0].to_s
 MEDIA_NAME = ARGV[1].to_s
 M3U_NAME = ARGV[2].to_s.empty? ? "M3U" : ARGV[2].to_s
 
-#LIBRARY_PATH = ARGV[0].to_s
-#ORIGINAL_MEDIA_PATH = "/Users/djtaxxodium/Desktop/DJTaxxTraxx/"
-#CURRENT_MEDIA_PATH = ARGV[1].to_s
-#SAVE_PATH = ARGV[2].to_s
+LIBRARY_PATH = Dir.pwd+"/#{LIBRARY_NAME}"
+MEDIA_PATH = Dir.pwd+"/#{MEDIA_NAME}"
+SAVE_PATH = Dir.pwd+"/#{M3U_NAME}"
 
-if !(Dir.exists?(LIBRARY_NAME) && Dir.exists?(MEDIA_NAME))
+if !(File.exists?(LIBRARY_PATH) && Dir.exists?(MEDIA_PATH))
     puts "Library file and/or media directory could not be found."
     puts "Please check the name and try again."
     exit
 end
 
-@media_list = collect_tracks
+@media_list = []
 
-def collect_tracks
-    doc = Nokogiri::XML(URI::open(LIBRARY_PATH))
+doc = Nokogiri::XML(URI::open(LIBRARY_PATH))
 
-    collection = doc.xpath('//DJ_PLAYLISTS/COLLECTION/TRACK')
-
-    list = []
-
-    collection.each do |track|
-        media = Hash.new
-        media["id"] = track["TrackID"]
-        media["url"] = track["Location"]
-        media["artist"] = track["Artist"]
-        media["song"] = track["Name"]
-        list << media
-    end
-
-    list
+# Collect all tracks and save required info for m3u file
+collection = doc.xpath('//DJ_PLAYLISTS/COLLECTION/TRACK')
+collection.each do |track|
+    media = Hash.new
+    media["id"] = track["TrackID"]
+    media["url"] = track["Location"]
+    media["artist"] = track["Artist"]
+    media["song"] = track["Name"]
+    @media_list << media
 end
 
 def process(nodes, path)
@@ -95,15 +88,10 @@ def generate_m3u(tracks)
         artist = track["artist"].to_s
         song = track["song"].to_s
         url = URI.decode(track["url"])
+        url = url.gsub("file://localhost", "")
 
         match = url.match /(.*)#{MEDIA_NAME}/
-
-        puts match[0]
-        exit
-
-        ##url = url.to_s.gsub("#{ORIGINAL_MEDIA_PATH}", "#{CURRENT_MEDIA_PATH+"/"}")
-        #url = url.to_s.gsub("#{ORIGINAL_MEDIA_PATH}", "/DJTaxxTraxx/")
-        #url = url.gsub("file://localhost", "")
+        url.gsub!(match[1], "/") unless match.nil?
 
         m3u << "#EXTINF:#{track["id"]},#{artist} - #{song}\n"
         m3u << "#{url}\n"
