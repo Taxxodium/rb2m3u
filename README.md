@@ -24,9 +24,9 @@ Before you run the script you will need to put the script in the root folder of 
 For example, your hierarchy should look something like this:
 
 ```
-/Music/ # \<\# The directory where your music collection is stored, ie the actual files. Name can be different!
-/library.xml # \<\= The xml file you exported from Rekordbox containing  your collection.
-/rb2m3u.rb # \<\= The script :)
+/Music/ # The directory where your music collection is stored, ie the actual files. Name can be different!
+/library.xml # The xml file you exported from Rekordbox containing  your collection.
+/rb2m3u.rb # The script :)
 ```
 
 After running the script your hierarchy should look like this:
