@@ -6,9 +6,10 @@ if ARGV.size < 2
     puts "Usage: ruby #{__FILE__} LIBRARY MEDIA M3U" 
     puts ""
     puts "Where:"
-    puts "LIBRARY: The name of the XML file, eg library.xml"
-    puts "MEDIA: The name of the directory containing the actual music files. Must be on the same file level of this script."
-    puts "M3U: Optional, the name of the directory where the m3u files will be stored. Default is 'M3U'"
+    puts ""
+    puts "LIBRARY:\tThe name of the XML file, eg library.xml"
+    puts "MEDIA:\t\tThe name of the directory containing the actual music files. Must be on the same file level of this script."
+    puts "M3U:\t\tOptional, the name of the directory where the m3u files will be stored. Default is 'M3U'"
     exit
 end
 
@@ -41,6 +42,8 @@ collection.each do |track|
     @media_list << media
 end
 
+# Processes the nodes to generate the m3u files
+# This function is recursive, it creates a directory for each playlist group it finds
 def process(nodes, path)
     nodes.each do |node|
         next unless node.name == "NODE"
@@ -80,6 +83,7 @@ def get_tracks(node)
     tracks
 end
 
+# Generates an m3u string from the given tracks
 def generate_m3u(tracks)
     m3u = ""
     m3u << "#EXTM3U\n"
