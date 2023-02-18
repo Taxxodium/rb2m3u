@@ -48,9 +48,9 @@ You run the script like so: `ruby rb2m3u.rb LIBRARY MEDIA M3U`
 
 **NOTE** Use the script from the directory it's in. Do not use file paths because that won't work.
 
-`LIBRARY`: is the name of the _XML_ file you exported, eg. _library.xml_
-`MEDIA`: is the name of the directory your music files are stored
-_`M3U`_: optional, the name of the directory you want to store the _m3u_ files in. Default is _M3U_
+* `LIBRARY`: is the name of the _XML_ file you exported, eg. _library.xml_
+* `MEDIA`: is the name of the directory your music files are stored
+* _`M3U`_: optional, the name of the directory you want to store the _m3u_ files in. Default is _M3U_
 
 # DISCLAIMER
 
